@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Keep the sprinkle pattern variable in case you want it later */
+:root {
+  --pizza-bg: radial-gradient(circle at 10% 10%, rgba(255, 221, 87, .25) 2px, transparent 3px),
+              radial-gradient(circle at 60% 30%, rgba(229,57,53,.18) 2px, transparent 3px),
+              radial-gradient(circle at 30% 70%, rgba(107,142,35,.18) 2px, transparent 3px),
+              radial-gradient(circle at 85% 80%, rgba(156,43,27,.15) 2px, transparent 3px);
+}
+
+/* ===== DARK THEME TOKENS (single source of truth) ===== */
+:root{
+  --bg:            #0b0f14;             /* page bg */
+  --surface:       rgba(17, 25, 40, .55);
+  --surface-2:     rgba(17, 25, 40, .55);
+  --text:          #e5e7eb;             /* slate-200 */
+  --muted:         #9aa3b2;             /* slate-400-ish */
+  --primary:       #f97316;             /* orange-500 */
+  --primary-600:   #ea580c;             /* orange-600 */
+  --primary-700:   #c2410c;             /* orange-700 */
+  --secondary:     #38bdf8;             /* sky-400 */
+  --secondary-700: #0ea5e9;             /* sky-500 */
+  --accent:        #22c55e;             /* green-500 */
+  --rose:          #fb7185;             /* rose-400 */
+  --ring:          rgba(249, 115, 22, .35);
+  --shadow:        0 18px 55px rgba(0,0,0,.45);
+}
+
+/* Global surface + text (dark). This overrides the earlier light body text. */
+html, body {
+  background: radial-gradient(1200px 600px at 50% -200px, #0f172a 0%, #0b0f14 45%) fixed;
+  color: var(--text);
+}
+
+/* Optional background confetti texture (used in App) */
+.bg-confetti{
+  background-image:
+    radial-gradient(#475569 1px, transparent 1px),
+    radial-gradient(#052e42 1px, transparent 1px),
+    radial-gradient(#2a1f0a 1px, transparent 1px);
+  background-position: 0 0, 16px 16px, 32px 32px;
+  background-size: 56px 56px;
+  opacity:.25;
+}
+
+/* ===== iOS-style glassmorphism ===== */
+.glass {
+  background: rgba(17,25,40,.55);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* Make ALL “card” containers glass automatically */
+.card{
+  background: var(--surface-2);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+/* ===== Buttons (dark-accessible) ===== */
+.btn{ border-radius: 10px; font-weight: 700; padding: .6rem 1rem; }
+.btn-primary{ background: var(--primary); color:#111827; }          /* orange on dark */
+.btn-primary:hover{ background: var(--primary-600); }
+.btn-secondary{ background: var(--secondary); color:#0b0f14; }
+.btn-secondary:hover{ background: var(--secondary-700); color:#021018; }
+.btn-ghost{ background: transparent; color: var(--text); }
+.btn-ghost:hover{ background: rgba(255,255,255,.06); }
+.btn-error{ background: var(--rose); color:#0b0f14; }
+
+/* ===== Inputs (dark) ===== */
+.input{
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  padding:.6rem .8rem;
+}
+.input::placeholder{ color: #9aa3b2; }
+.input:focus{ outline: none; box-shadow: 0 0 0 3px var(--ring); border-color: var(--primary); }
+
+/* ===== Badges (dark) ===== */
+.badge{
+  background: rgba(249,115,22,.18);     /* orange-500 with alpha */
+  color: #ffedd5;                        /* amber-100 */
+  border: 1px solid rgba(249,115,22,.28);
+  border-radius: 999px;
+  padding: .2rem .6rem;
+  font-weight: 700;
+}
+
+/* Layout helper */
+.container-xl{ max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+/* Utility: better muted text on dark for components that still use slate-6/7 */
+.text-slate-600, .text-slate-700 { color: var(--muted) !important; }
+
+/* Inner glass slightly lighter for contrast inside glass blocks */
+.glass .glass { background: rgba(17,25,40,.45); border-color: rgba(255,255,255,.06); }
+.glass .input { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); color: #e5e7eb; }
+.glass .btn-ghost:hover { background: rgba(255,255,255,.08); }
+
+/* ===== Animations & Oven styles (unchanged) ===== */
+
+/* Animations for builder */
+@keyframes scaleIn { from { transform: scale(.8); opacity: .3 } to { transform: scale(1); opacity: 1 } }
+.animate-scaleIn { animation: scaleIn .5s ease-out both }
+
+@keyframes drizzle {
+  0% { transform: translateX(-20%) rotate(-2deg); opacity: 0 }
+  50% { opacity: .9 }
+  100% { transform: translateX(0%) rotate(0deg); opacity: .8 }
+}
+.animate-drizzle { animation: drizzle .8s ease-out both }
+
+@keyframes sprinkle {
+  0% { transform: translateY(-6px) scale(.6); opacity: 0 }
+  60% { opacity: 1 }
+  100% { transform: translateY(0) scale(1) }
+}
+.animate-sprinkle { animation: sprinkle .5s ease-out both; animation-delay: .1s }
+
+@keyframes trail {
+  0% { transform: translate(-50%, -50%) translate(calc(var(--dx, 0px) * -2), calc(var(--dy, 0px) * -2)) scale(.6); opacity: 0 }
+  70% { opacity: 1 }
+  100% { transform: translate(-50%, -50%) translate(0,0) scale(1); opacity: 1 }
+}
+.animate-trail { animation: trail .6s ease-out both }
+
+@keyframes pop {
+  0% { transform: scale(.6); opacity: 0 }
+  80% { transform: scale(1.05) }
+  100% { transform: scale(1); opacity: 1 }
+}
+.animate-pop { animation: pop .35s ease-out both }
+
+/* Oven animation for checkout */
+
+.plate-track { position: absolute; top: 58%; left: 0; right: 0; height: 0; transform: translateY(-50%); animation: plateInOut2 5.6s ease-in-out infinite }
+@keyframes plateInOut2 {
+  0% { transform: translateX(-160%) translateY(-50%) }
+  22% { transform: translateX(16%) translateY(-50%) }
+  28% { transform: translateX(22%) translateY(-50%) }
+  50% { transform: translateX(-160%) translateY(-50%) }
+  100% { transform: translateX(-160%) translateY(-50%) }
+}
+
+.plate { position: absolute; left: 0; width: 160px; height: 28px; background: radial-gradient(ellipse at 50% 50%, #f3f4f6, #d1d5db); border-radius: 999px; box-shadow: 0 8px 18px rgba(0,0,0,.18) }
+.pizza-disc { position: absolute; top: -92px; left: 18px; width: 124px; height: 124px; border-radius: 50%; background: #E8C39E; box-shadow: 0 10px 20px rgba(0,0,0,.1); animation: pizzaPlateFade 5.6s ease-in-out infinite }
+@keyframes pizzaPlateFade {
+  0% { opacity: 1; transform: scale(1) }
+  24% { opacity: 1; transform: scale(1.02) }
+  32% { opacity: 0; transform: scale(0.98) }
+  100% { opacity: 0 }
+}
+
+.turntable { position: absolute; left: 50%; top: 62%; width: 180px; height: 180px; transform: translate(-50%, -50%); border-radius: 999px; background: radial-gradient(circle at 50% 60%, rgba(255,255,255,.05), rgba(0,0,0,.15)); box-shadow: inset 0 2px 12px rgba(0,0,0,.35) }
+.pizza-in { position: absolute; left: 50%; top: 52%; width: 132px; height: 132px; transform: translate(-50%, -50%); border-radius: 50%; background: #E8C39E; box-shadow: 0 10px 20px rgba(0,0,0,.1); animation: pizzaInSpin 5.6s ease-in-out infinite; opacity: 0 }
+@keyframes pizzaInSpin {
+  0%, 24% { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) }
+  28% { opacity: 1 }
+  70% { opacity: 1; transform: translate(-50%, -50%) rotate(360deg) }
+  82% { opacity: 0; transform: translate(-50%, -50%) rotate(390deg) }
+  100% { opacity: 0 }
+}
+
+
+.sauce-texture {
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(0,0,0,0.08), transparent 45%),
+    conic-gradient(from 0deg, rgba(255,255,255,0.08) 0 10%, transparent 10% 20%, rgba(0,0,0,0.06) 20% 30%, transparent 30% 40%, rgba(255,255,255,0.05) 40% 50%, transparent 50% 60%, rgba(0,0,0,0.05) 60% 70%, transparent 70% 80%, rgba(255,255,255,0.05) 80% 90%, transparent 90% 100%);
+  background-blend-mode: overlay;
+}
+
+
+@keyframes pl-fade {
+  from { opacity: 0; transform: scale(.985); }
+  to   { opacity: 1; transform: scale(1); }
+}
